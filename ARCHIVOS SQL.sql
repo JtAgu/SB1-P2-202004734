@@ -55,7 +55,7 @@ CREATE TABLE ORDENES(
     Entrega DATE,
     IdRestaurante VARCHAR2(100),
     CONSTRAINT fk_orden_restaurante FOREIGN KEY (IdRestaurante) REFERENCES RESTAURANTES(Id),
-    Estado VARCHAR2(20)
+    Estado VARCHAR2(20)    
 )
 
 
@@ -66,7 +66,21 @@ CREATE TABLE DETALLE(
     TipoProducto CHAR,
     Producto INT,
     Cantidad INT,
+    Precio DECIMAL(10,2),
     Observacion VARCHAR2(100)
+)
+
+
+--TABLA DETALLE-----------------------------------
+CREATE TABLE FACTURA(
+    SERIE VARCHAR(20),
+    Total DECIMAL(10,2),
+    Lugar VARCHAR2(100),
+    Fecha_Hora DATE,
+    IdOrden Number,
+    NIT VARCHAR2(20),
+    Forma_Pago CHAR,
+    IdRepartidor NUMBER
 )
 
 
@@ -253,7 +267,7 @@ END;
 
 
 
---RESTAURANTE PUESTO-----------------------------------------
+--PUESTO PROCEDURE-----------------------------------------
 CREATE OR REPLACE PROCEDURE insertar_puesto (
     p_nombre IN VARCHAR2,
     p_descripcion IN VARCHAR2,
@@ -274,7 +288,7 @@ END;
 
 
 
---RESTAURANTE EMPLEADO-----------------------------------------
+--EMPLEADO PROCEDURE-----------------------------------------
 CREATE OR REPLACE PROCEDURE insertar_empleado (
     p_nombre IN VARCHAR2,
     p_apellido IN VARCHAR2,
@@ -340,7 +354,7 @@ END;
 
 
 
---RESTAURANTE CLIENTE-----------------------------------------
+--CLIENTE PROCEDURE-----------------------------------------
 CREATE OR REPLACE PROCEDURE insertar_cliente (
     p_dpi IN NUMBER,
     p_nombre IN VARCHAR2,
@@ -390,7 +404,7 @@ END;
 
 
 
---RESTAURANTE DIRECCION-----------------------------------------
+--DIRECCION PROCEDURE-----------------------------------------
 CREATE OR REPLACE PROCEDURE insertar_direccion (
     p_dpi IN NUMBER,
     p_direccion IN VARCHAR2,
@@ -417,7 +431,7 @@ END;
 
 
 
---RESTAURANTE ORDENES-----------------------------------------------
+--ORDENES PROCEDURE-----------------------------------------------
 CREATE OR REPLACE PROCEDURE insertar_orden (
     p_dpi IN NUMBER,
     p_direccion IN NUMBER,
@@ -442,18 +456,229 @@ BEGIN
     END IF;
 
     SELECT COUNT(*) INTO contador FROM RESTAURANTES WHERE p_zona=ZONA AND p_municipio=MUNICIPIO;
-    
-	DBMS_OUTPUT.PUT_LINE(contador);
 
     IF contador=0 THEN
         -- Imprimir mensaje de error
         INSERT INTO ORDENES (DPI_CLIENTE, ID_DIRECCION, CANAL, INICIO, ESTADO)
         VALUES (p_dpi,p_direccion,p_canal,GETCURRENTDATE(),'SIN COBERTURA');
        	DBMS_OUTPUT.PUT_LINE('NO HAY RESTAURANTES EN LA DIRECCION SOLICITADA'); 
-        RETURN;
     ELSE
 		SELECT ID INTO id_R FROM RESTAURANTES WHERE p_zona=ZONA AND p_municipio=MUNICIPIO FETCH FIRST 1 ROWS ONLY;
     	INSERT INTO ORDENES (DPI_CLIENTE, ID_DIRECCION, CANAL, INICIO,IDRESTAURANTE, ESTADO)
 	    VALUES (p_dpi,p_direccion,p_canal,GETCURRENTDATE(),id_R,'INICIADA');   
-	DBMS_OUTPUT.PUT_LINE('SE INSERTO UNA ORDEN EXITOSAMENTE');  	
+	    DBMS_OUTPUT.PUT_LINE('SE INSERTO UNA ORDEN EXITOSAMENTE');  	
     END IF;
+
+END;
+
+--ITEMS PROCEDURE-----------------------------------------------
+CREATE OR REPLACE PROCEDURE AgregarItem (
+    p_IdOrden IN NUMBER,
+    p_tipoProd IN CHAR,
+    p_Producto IN NUMBER,
+    p_Cantidad IN NUMBER,
+    p_Observacion IN VARCHAR2
+) AS
+    p_estado VARCHAR2(20);
+   p_precio DECIMAL(10,2);
+BEGIN
+    IF existeOrden(p_IdOrden) = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Identificador de orden inexistente'); -- Imprimir mensaje de error
+        RETURN; -- Salir del procedimiento
+    END IF;
+   
+   SELECT ESTADO  INTO p_estado FROM ORDENES WHERE ID = p_IdOrden;
+    IF p_estado = 'INICIADA' THEN
+        UPDATE ORDENES SET ESTADO = 'AGREGANDO'
+        WHERE ID = p_IdOrden;
+    ELSIF p_estado = 'AGREGANDO' THEN
+    	DBMS_OUTPUT.PUT_LINE(':)'); -- Imprimir mensaje de error
+    ELSE
+    	DBMS_OUTPUT.PUT_LINE('Imposible proceder, orden de estado incorrecto'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
+
+    IF p_Cantidad < 1 THEN
+        DBMS_OUTPUT.PUT_LINE('La cantidad debe ser un numero positivo'); -- Imprimir mensaje de error
+        RETURN; -- Salir del procedimiento
+    END IF;
+    
+    IF UPPER(p_tipoProd) = 'C' THEN -- Validar que el canal sea 'C' , 'E' , 'B' o 'P'
+        IF p_Producto < 1 OR p_Producto > 6 THEN
+            DBMS_OUTPUT.PUT_LINE('Numero de combo inexistente'); -- Imprimir mensaje de error
+            RETURN;
+        ELSE
+        	
+	        	IF p_Producto=1 THEN p_precio:= 41.00;
+	        	ELSIF p_Producto=2 THEN p_precio:= 32.00;
+	        	ELSIF p_Producto=3 THEN p_precio:= 54.00;
+		        ELSIF p_Producto=4 THEN p_precio:= 47.00;
+	        	ELSIF p_Producto=5 THEN p_precio:= 85.00;
+	        	ELSIF p_Producto=6 THEN p_precio:= 36.00;
+	        END IF;
+        END IF;
+    ELSIF UPPER(p_tipoProd) = 'E' THEN
+        IF p_Producto < 1 OR p_Producto > 3 THEN
+            DBMS_OUTPUT.PUT_LINE('Numero de entrada inexistente'); -- Imprimir mensaje de error
+            RETURN;
+        ELSE
+        	
+	        	IF p_Producto=1 THEN p_precio:= 15.00;
+	        	ELSIF p_Producto=2 THEN p_precio:= 17.00;
+	        	ELSIF p_Producto=3 THEN p_precio:= 12.00;
+	        END IF;
+        END IF;
+    ELSIF UPPER(p_tipoProd) = 'B' THEN
+        IF p_Producto < 1 OR p_Producto > 5 THEN
+            DBMS_OUTPUT.PUT_LINE('Numero de BEBIDA inexistente'); -- Imprimir mensaje de error
+            RETURN;
+        ELSE
+        	 
+	        	IF p_Producto=1 THEN p_precio:= 12.00;
+	        	ELSIF p_Producto=2 THEN p_precio:= 12.00;
+	        	ELSIF p_Producto=3 THEN p_precio:= 12.00;
+		        ELSIF p_Producto=4 THEN p_precio:= 12.00;
+	        	ELSIF p_Producto=5 THEN p_precio:= 18.00;
+	        END IF;
+        END IF;
+    ELSIF UPPER(p_tipoProd) = 'P' THEN
+        IF p_Producto < 1 OR p_Producto > 4 THEN
+            DBMS_OUTPUT.PUT_LINE('Numero de POSTRE inexistente'); -- Imprimir mensaje de error
+            RETURN;
+        ELSE
+        	 
+	        	IF p_Producto=1 THEN p_precio:= 13.00;
+	        	ELSIF p_Producto=2 THEN p_precio:= 15.00;
+	        	ELSIF p_Producto=3 THEN p_precio:= 8.00 ;
+		        ELSIF p_Producto=4 THEN p_precio:= 10.00;
+	        END IF;
+        END IF;
+    ELSE
+    	DBMS_OUTPUT.PUT_LINE('El parámetro TIPO de producto debe ser C, E, B o P'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
+
+    INSERT INTO DETALLE
+   	VALUES (p_IdOrden, p_tipoProd, p_Producto, p_Cantidad,p_precio, p_Observacion);
+    DBMS_OUTPUT.PUT_LINE('ARTICULO AÑADIDO EXITOSAMENTE');
+
+END;
+
+
+CREATE OR REPLACE FUNCTION existeOrden (
+	p_id IN NUMBER
+) RETURN INT AS
+    v_count NUMBER;
+BEGIN
+    
+    SELECT COUNT(*) INTO v_count FROM ORDENES WHERE ID = p_id;
+    
+    IF v_count = 0 THEN
+        RETURN 0;
+    ELSE
+        RETURN 1;
+    END IF;
+END;
+
+
+
+--FACTURA PROCEDURE-----------------------------------------------
+CREATE OR REPLACE PROCEDURE ConfirmarOrden (
+    p_IdOrden IN NUMBER,
+    p_FormaPago IN CHAR,
+    p_idRepartidor IN NUMBER
+) AS
+    p_estado VARCHAR2(20);
+    p_id_dir NUMBER;
+    p_dpi NUMBER;
+    p_municipio VARCHAR2(50);
+    p_monto DECIMAL(10,2);
+    NIT VARCHAR2(100);
+    p_serie VARCHAR(20);
+
+BEGIN
+    IF existeOrden(p_IdOrden) = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Identificador de orden inexistente'); -- Imprimir mensaje de error
+        RETURN; -- Salir del procedimiento
+    END IF;
+    SELECT ESTADO  INTO p_estado FROM ORDENES WHERE ID = p_IdOrden;
+    SELECT ID_DIRECCION INTO p_id_dir FROM ORDENES WHERE ID=p_IdOrden;
+    SELECT MUNICIPIO INTO p_municipio FROM DIRECCIONES WHERE ID=p_id_dir;
+    SELECT DPI_CLIENTE INTO p_dpi FROM ORDENES WHERE ID=p_IdOrden;
+    SELECT NIT INTO NIT FROM CLIENTES WHERE DPI = p_dpi;
+
+    SELECT ESTADO  INTO p_estado FROM ORDENES WHERE ID = p_IdOrden;
+    IF p_estado = 'AGREGANDO' THEN
+        UPDATE ORDENES SET ESTADO = 'EN CAMINO'
+        WHERE ID = p_IdOrden;
+    ELSE
+    	DBMS_OUTPUT.PUT_LINE('Imposible proceder, orden de estado incorrecto'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
+
+
+    IF UPPER(p_FormaPago) = 'E' OR UPPER(p_FormaPago) = 'T' THEN -- Validar que el canal sea 'E' o 'T'
+        IF existeEmplado(p_idRepartidor)=0 THEN
+            DBMS_OUTPUT.PUT_LINE('Empleado inexistente'); -- Imprimir mensaje de error
+            RETURN;
+        END IF;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Forma de pago invalida'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
+    
+    SELECT SUM(Precio*CANTIDAD)
+    INTO p_monto
+    FROM DETALLE
+    WHERE Id_Orden = p_IdOrden;
+
+    SELECT CONCAT(TO_CHAR(SYSDATE, 'YYYY'), p_IdOrden) INTO p_serie FROM DUAL;
+
+    INSERT INTO FACTURA 
+    VALUES (p_serie,p_monto,p_municipio,GETCURRENTDATE(),p_IdOrden,NIT,p_FormaPago,p_idRepartidor);   
+	DBMS_OUTPUT.PUT_LINE('SE INSERTO LA FACTURA EXITOSAMENTE');  	
+
+END;
+
+
+
+CREATE OR REPLACE FUNCTION existeEmplado (
+	p_id IN NUMBER
+) RETURN INT AS
+    v_count NUMBER;
+BEGIN
+    
+    SELECT COUNT(*) INTO v_count FROM EMPLEADOS WHERE ID = p_id;
+    
+    IF v_count = 0 THEN
+        RETURN 0;
+    ELSE
+        RETURN 1;
+    END IF;
+END;
+
+
+-----------------------------------------------------------------------------
+---------------------------REPORTES------------------------------------------
+
+--1.Listar restaurantes
+SELECT Id, Direccion, Municipio, Zona, Telefono, Personal,
+       CASE WHEN Parqueo = 1 THEN 'Sí' ELSE 'No' END AS Tiene_Parqueo
+FROM RESTAURANTES;
+
+
+--2.Consultar empleado
+SELECT Id, Nombre || ' ' || Apellidos AS Nombre_Completo, Fecha_Nacimiento, Correo, Telefono, Direccion, DPI, Puesto, Fecha_Inicio, IdRestaurante
+FROM EMPLEADOS
+WHERE Id = p_id;
+
+
+--3.Consultar Pedidos Cliente
+SELECT Producto, 
+    CASE WHEN TIPOPRODUCTO='C' THEN 'COMBO' WHEN  TIPOPRODUCTO='E' THEN 'EXTRA' WHEN TIPOPRODUCTO='B' THEN 'BEBIDA' WHEN TIPOPRODUCTO='P' THEN 'POSTRE' END AS Tipo_Producto,
+    Cantidad, Observacion
+FROM DETALLE 
+WHERE ID_ORDEN=6;
+
+
+--4.
