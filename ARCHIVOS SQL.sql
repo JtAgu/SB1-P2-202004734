@@ -735,6 +735,11 @@ AS
     v_cantidad DETALLE.Cantidad%TYPE;
     v_observacion DETALLE.Observacion%TYPE;
 BEGIN
+
+    IF existeEmplado(p_idRepartidor)=0 THEN
+        DBMS_OUTPUT.PUT_LINE('Empleado inexistente'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
     OPEN c_detalle;
     LOOP
         FETCH c_detalle INTO v_producto, v_tipo_producto, v_precio, v_cantidad, v_observacion;
@@ -771,6 +776,10 @@ AS
     v_cantidad DETALLE.Cantidad%TYPE;
     v_observacion DETALLE.Observacion%TYPE;
 BEGIN
+    IF existeOrden(p_IdOrden)=0 THEN
+        DBMS_OUTPUT.PUT_LINE('ORDEN inexistente'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
     OPEN cur_detalle;
     LOOP
         FETCH cur_detalle INTO v_producto, v_tipo_producto, v_precio, v_cantidad, v_observacion;
@@ -807,6 +816,10 @@ AS
     v_direccion DIRECCIONES.Direccion%TYPE;
     v_canal ORDENES.Canal%TYPE;
 BEGIN
+    IF existeCliente(p_dpi)=0 THEN
+        DBMS_OUTPUT.PUT_LINE('CLIENTE inexistente'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
     -- Abrir cursor
     OPEN c_historial;
     -- Recorrer cursor y asignar valores a las variables
@@ -838,6 +851,10 @@ AS
     v_municipio VARCHAR2(50);
     v_zona VARCHAR2(50);
 BEGIN
+     IF existeCliente(p_dpi)=0 THEN
+        DBMS_OUTPUT.PUT_LINE('CLIENTE inexistente'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
     OPEN c_direcciones;
     LOOP
         FETCH c_direcciones INTO v_direccion, v_municipio, v_zona;
@@ -943,6 +960,10 @@ AS
     v_tiempoEspera NUMBER;
     v_repartidor VARCHAR2(100);
 BEGIN
+     IF p_minutos<0 THEN
+        DBMS_OUTPUT.PUT_LINE('LA ENTRADA EN MINUTOS DEBE SER POSITIVA'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
     OPEN c_ordenes;
     LOOP
         FETCH c_ordenes INTO v_idOrden, v_direccion, v_fechaInicio, v_fechaFin, v_tiempoEspera, v_repartidor;
