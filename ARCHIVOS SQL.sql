@@ -219,7 +219,7 @@ END;
 ----------------COMANDOS DE FUNCIONES----------------------
 
 --RESTAURANTE VALIDACIONES----------------------------------
-CREATE OR REPLACE PROCEDURE insertar_restaurante (
+CREATE OR REPLACE PROCEDURE RegistrarRestaurante (
     p_id IN VARCHAR2,
     p_address IN VARCHAR2,
     p_municipio IN VARCHAR2,
@@ -268,7 +268,7 @@ END;
 
 
 --PUESTO PROCEDURE-----------------------------------------
-CREATE OR REPLACE PROCEDURE insertar_puesto (
+CREATE OR REPLACE PROCEDURE RegistrarPuesto (
     p_nombre IN VARCHAR2,
     p_descripcion IN VARCHAR2,
     p_salario IN DECIMAL
@@ -289,7 +289,7 @@ END;
 
 
 --EMPLEADO PROCEDURE-----------------------------------------
-CREATE OR REPLACE PROCEDURE insertar_empleado (
+CREATE OR REPLACE PROCEDURE CrearEmpleado (
     p_nombre IN VARCHAR2,
     p_apellido IN VARCHAR2,
     p_fecha IN VARCHAR2,
@@ -355,7 +355,7 @@ END;
 
 
 --CLIENTE PROCEDURE-----------------------------------------
-CREATE OR REPLACE PROCEDURE insertar_cliente (
+CREATE OR REPLACE PROCEDURE RegistrarCliente (
     p_dpi IN NUMBER,
     p_nombre IN VARCHAR2,
     p_apellido IN VARCHAR2,
@@ -405,7 +405,7 @@ END;
 
 
 --DIRECCION PROCEDURE-----------------------------------------
-CREATE OR REPLACE PROCEDURE insertar_direccion (
+CREATE OR REPLACE PROCEDURE RegistrarDireccion (
     p_dpi IN NUMBER,
     p_direccion IN VARCHAR2,
     p_municipio IN VARCHAR2,
@@ -432,7 +432,7 @@ END;
 
 
 --ORDENES PROCEDURE-----------------------------------------------
-CREATE OR REPLACE PROCEDURE insertar_orden (
+CREATE OR REPLACE PROCEDURE CrearOrden (
     p_dpi IN NUMBER,
     p_direccion IN NUMBER,
     p_canal IN CHAR
@@ -658,27 +658,301 @@ BEGIN
 END;
 
 
+
+
+--FINALIZAR PROCEDURE-----------------------------------------------
+CREATE OR REPLACE PROCEDURE FinalizarOrden (
+    p_IdOrden IN NUMBER
+) AS
+    p_estado VARCHAR2(20);
+
+BEGIN
+    IF existeOrden(p_IdOrden) = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Identificador de orden inexistente'); -- Imprimir mensaje de error
+        RETURN; -- Salir del procedimiento
+    END IF;
+    SELECT ESTADO  INTO p_estado FROM ORDENES WHERE ID = p_IdOrden;
+    IF p_estado = 'EN CAMINO' THEN
+        UPDATE ORDENES SET ESTADO = 'ENTREGADA'
+        WHERE ID = p_IdOrden;
+        UPDATE ORDENES SET ENTREGA = GETCURRENTDATE()
+        WHERE ID = p_IdOrden;
+    ELSE
+    	DBMS_OUTPUT.PUT_LINE('Imposible proceder, orden de estado incorrecto'); -- Imprimir mensaje de error
+        RETURN;
+    END IF;
+
+	DBMS_OUTPUT.PUT_LINE('SE ENTREGO LA ORDEN EXITOSAMENTE');  	
+
+END;
+
+
+
 -----------------------------------------------------------------------------
 ---------------------------REPORTES------------------------------------------
 
 --1.Listar restaurantes
-SELECT Id, Direccion, Municipio, Zona, Telefono, Personal,
-       CASE WHEN Parqueo = 1 THEN 'Sí' ELSE 'No' END AS Tiene_Parqueo
-FROM RESTAURANTES;
+CREATE OR REPLACE PROCEDURE Listar restaurantes
+AS
+BEGIN
+  FOR r IN (SELECT Id, Direccion, Municipio, Zona, Telefono, Personal,
+                   CASE WHEN Parqueo = 1 THEN 'Sí' ELSE 'No' END AS Tiene_Parqueo
+            FROM RESTAURANTES)
+  LOOP
+    DBMS_OUTPUT.PUT_LINE('Id: ' || r.Id);
+    DBMS_OUTPUT.PUT_LINE('Direccion: ' || r.Direccion);
+    DBMS_OUTPUT.PUT_LINE('Municipio: ' || r.Municipio);
+    DBMS_OUTPUT.PUT_LINE('Zona: ' || r.Zona);
+    DBMS_OUTPUT.PUT_LINE('Telefono: ' || r.Telefono);
+    DBMS_OUTPUT.PUT_LINE('Personal: ' || r.Personal);
+    DBMS_OUTPUT.PUT_LINE('¿Tiene Parqueo?: ' || r.Tiene_Parqueo);
+    DBMS_OUTPUT.PUT_LINE('------------------------');
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE('------------------------');
+END;
 
 
 --2.Consultar empleado
-SELECT Id, Nombre || ' ' || Apellidos AS Nombre_Completo, Fecha_Nacimiento, Correo, Telefono, Direccion, DPI, Puesto, Fecha_Inicio, IdRestaurante
-FROM EMPLEADOS
-WHERE Id = p_id;
+CREATE OR REPLACE PROCEDURE ConsultarEmpleado (
+    p_IdOrden IN NUMBER
+)
+AS
+    CURSOR c_detalle IS 
+        SELECT Producto, 
+            CASE 
+                WHEN TIPOPRODUCTO='C' THEN 'COMBO' 
+                WHEN TIPOPRODUCTO='E' THEN 'EXTRA' 
+                WHEN TIPOPRODUCTO='B' THEN 'BEBIDA' 
+                WHEN TIPOPRODUCTO='P' THEN 'POSTRE' 
+            END AS Tipo_Producto,
+            Precio, Cantidad, Observacion
+        FROM DETALLE 
+        WHERE ID_ORDEN=p_IdOrden;
+        
+    v_producto DETALLE.Producto%TYPE;
+    v_tipo_producto DETALLE.TipoProducto%TYPE;
+    v_precio DETALLE.Precio%TYPE;
+    v_cantidad DETALLE.Cantidad%TYPE;
+    v_observacion DETALLE.Observacion%TYPE;
+BEGIN
+    OPEN c_detalle;
+    LOOP
+        FETCH c_detalle INTO v_producto, v_tipo_producto, v_precio, v_cantidad, v_observacion;
+        EXIT WHEN c_detalle%NOTFOUND;
+        -- Realizar alguna acción con los datos obtenidos, por ejemplo, imprimirlos
+        DBMS_OUTPUT.PUT_LINE('Producto: ' || v_producto || ', Tipo de producto: ' || v_tipo_producto || ', Precio: ' || v_precio || ', Cantidad: ' || v_cantidad || ', Observación: ' || v_observacion);
+    END LOOP;
+    CLOSE c_detalle;
+END;
+
+
 
 
 --3.Consultar Pedidos Cliente
-SELECT Producto, 
-    CASE WHEN TIPOPRODUCTO='C' THEN 'COMBO' WHEN  TIPOPRODUCTO='E' THEN 'EXTRA' WHEN TIPOPRODUCTO='B' THEN 'BEBIDA' WHEN TIPOPRODUCTO='P' THEN 'POSTRE' END AS Tipo_Producto,
-    Cantidad, Observacion
-FROM DETALLE 
-WHERE ID_ORDEN=6;
+CREATE OR REPLACE PROCEDURE ConsultarPedidosCliente (
+    p_IdOrden IN NUMBER
+)
+AS
+    CURSOR cur_detalle IS
+        SELECT Producto, 
+            CASE 
+                WHEN TIPOPRODUCTO='C' THEN 'COMBO' 
+                WHEN  TIPOPRODUCTO='E' THEN 'EXTRA' 
+                WHEN TIPOPRODUCTO='B' THEN 'BEBIDA' 
+                WHEN TIPOPRODUCTO='P' THEN 'POSTRE' 
+            END AS Tipo_Producto,
+            Precio, Cantidad, Observacion
+        FROM DETALLE 
+        WHERE ID_ORDEN = p_IdOrden;
+        
+    v_producto DETALLE.Producto%TYPE;
+    v_tipo_producto VARCHAR2(10);
+    v_precio DETALLE.Precio%TYPE;
+    v_cantidad DETALLE.Cantidad%TYPE;
+    v_observacion DETALLE.Observacion%TYPE;
+BEGIN
+    OPEN cur_detalle;
+    LOOP
+        FETCH cur_detalle INTO v_producto, v_tipo_producto, v_precio, v_cantidad, v_observacion;
+        EXIT WHEN cur_detalle%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Producto: ' || v_producto || ', Tipo de Producto: ' || v_tipo_producto || ', Precio: ' || v_precio || ', Cantidad: ' || v_cantidad || ', Observación: ' || v_observacion);
+    END LOOP;
+    CLOSE cur_detalle;
+END;
 
 
---4.
+
+
+--4.Consultar historial de pedidos Cliente
+CREATE OR REPLACE PROCEDURE ConsultarHistorialOrdenes (
+    p_dpi IN NUMBER
+)
+AS
+    -- Declarar cursor
+    CURSOR c_historial IS
+        SELECT o.ID, o.Inicio AS FECHA, f.Total AS MONTO, r.ID as RESTAURANTE, 
+               rp.Nombre|| ' ' || rp.Apellidos as REPARTIDOR, d.Direccion, o.Canal
+        FROM ORDENES o 
+        INNER JOIN RESTAURANTES r ON o.IdRestaurante = r.Id 
+        INNER JOIN DIRECCIONES d ON o.Id_Direccion = d.Id 
+        INNER JOIN FACTURA f ON o.ID = f.IdOrden 
+        INNER JOIN EMPLEADOS rp ON f.IdRepartidor = rp.Id 
+        WHERE o.DPI_CLIENTE = p_dpi;
+    -- Declarar variables para almacenar los valores del cursor
+    v_id ORDENES.ID%TYPE;
+    v_fecha ORDENES.Inicio%TYPE;
+    v_monto FACTURA.Total%TYPE;
+    v_restaurante RESTAURANTES.ID%TYPE;
+    v_repartidor EMPLEADOS.Nombre%TYPE;
+    v_direccion DIRECCIONES.Direccion%TYPE;
+    v_canal ORDENES.Canal%TYPE;
+BEGIN
+    -- Abrir cursor
+    OPEN c_historial;
+    -- Recorrer cursor y asignar valores a las variables
+    LOOP
+        FETCH c_historial INTO v_id, v_fecha, v_monto, v_restaurante, v_repartidor, v_direccion, v_canal;
+        EXIT WHEN c_historial%NOTFOUND;
+        -- Imprimir valores de cada fila
+        DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ', FECHA: ' || v_fecha || ', MONTO: ' || v_monto ||
+                             ', RESTAURANTE: ' || v_restaurante || ', REPARTIDOR: ' || v_repartidor ||
+                             ', DIRECCIÓN: ' || v_direccion || ', CANAL: ' || v_canal);
+    END LOOP;
+    -- Cerrar cursor
+    CLOSE c_historial;
+END;
+
+
+
+--5. Consultar direcciones de un cliente
+CREATE OR REPLACE PROCEDURE ConsultarDirecciones (
+    p_dpi IN NUMBER
+)
+AS
+    CURSOR c_direcciones IS
+        SELECT DIRECCION, MUNICIPIO, ZONA
+        FROM DIRECCIONES
+        WHERE DPI_CLIENTE = p_dpi;
+
+    v_direccion VARCHAR2(100);
+    v_municipio VARCHAR2(50);
+    v_zona VARCHAR2(50);
+BEGIN
+    OPEN c_direcciones;
+    LOOP
+        FETCH c_direcciones INTO v_direccion, v_municipio, v_zona;
+        EXIT WHEN c_direcciones%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Dirección: ' || v_direccion || ', Municipio: ' || v_municipio || ', Zona: ' || v_zona);
+    END LOOP;
+    CLOSE c_direcciones;
+END;
+
+
+
+--6. Mostrar órdenes según estado
+CREATE OR REPLACE PROCEDURE MostrarOrdenes (
+    p_estado IN NUMBER
+)
+AS
+    s_estado VARCHAR2(20);
+    CURSOR c_ordenes IS
+        SELECT o.ID, o.ESTADO, o.Inicio AS FECHA, o.DPI_CLIENTE AS DPI_CLIENTE, d.Direccion, 
+            r.ID as RESTAURANTE , o.Canal
+        FROM ORDENES o 
+        INNER JOIN RESTAURANTES r ON o.IdRestaurante = r.Id 
+        INNER JOIN DIRECCIONES d ON o.Id_Direccion = d.Id 
+        WHERE o.ESTADO = s_estado;
+    r_ordenes c_ordenes%ROWTYPE;
+BEGIN
+    IF p_estado = 1 THEN
+        s_estado:='INICIADA';
+    ELSIF p_estado = 2 THEN
+        s_estado:='AGREGANDO';
+    ELSIF p_estado = 3 THEN
+        s_estado:='EN CAMINO';
+    ELSIF p_estado = 4 THEN
+        s_estado:='ENTREGADA';
+    ELSIF p_estado = -1 THEN
+        s_estado:='SIN COBERTURA';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('ENTRADA DE ESTADO INVALIDA, INGRESE UN VALOR CORRECTO');  	
+        RETURN;
+    END IF;
+
+    OPEN c_ordenes;
+    LOOP
+        FETCH c_ordenes INTO r_ordenes;
+        EXIT WHEN c_ordenes%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(r_ordenes.ID || ', ' || r_ordenes.ESTADO || ', ' || r_ordenes.FECHA || ', ' || 
+            r_ordenes.DPI_CLIENTE || ', ' || r_ordenes.DIRECCION || ', ' || r_ordenes.RESTAURANTE || ', ' || r_ordenes.CANAL);
+    END LOOP;
+    CLOSE c_ordenes;
+END;
+
+
+
+--7. Retornar encabezados de factura según el día
+CREATE OR REPLACE PROCEDURE ConsultarFacturas (
+    p_dia IN NUMBER,
+    p_mes IN NUMBER,
+    p_año IN NUMBER
+)
+AS
+    fecha_creada VARCHAR2(20);
+    v_serie      FACTURA.SERIE%TYPE;
+    v_total      FACTURA.TOTAL%TYPE;
+    v_lugar      FACTURA.LUGAR%TYPE;
+    v_fecha_hora FACTURA.FECHA_HORA%TYPE;
+    v_idorden    FACTURA.IDORDEN%TYPE;
+    v_nit        FACTURA.NIT%TYPE;
+    v_forma_pago FACTURA.FORMA_PAGO%TYPE;
+    CURSOR c_facturas IS
+        SELECT SERIE, TOTAL, LUGAR, FECHA_HORA, IDORDEN, NIT, FORMA_PAGO 
+        FROM FACTURA
+        WHERE TRUNC(FECHA_HORA) = TO_DATE(fecha_creada, 'YYYY-MM-DD');
+BEGIN
+    fecha_creada := TO_CHAR(p_año, 'FM0000') || '-' || TO_CHAR(p_mes, 'FM00') || '-' || TO_CHAR(p_dia, 'FM00');
+    OPEN c_facturas;
+    LOOP
+        FETCH c_facturas INTO v_serie, v_total, v_lugar, v_fecha_hora, v_idorden, v_nit, v_forma_pago;
+        EXIT WHEN c_facturas%NOTFOUND;
+        -- Aquí puedes realizar alguna tarea con cada resultado, por ejemplo imprimirlo en la consola
+        DBMS_OUTPUT.PUT_LINE('Factura: ' || v_serie || '-' || v_idorden || ', Total: ' || v_total || ', Fecha: ' || v_fecha_hora);
+    END LOOP;
+    CLOSE c_facturas;
+END;
+
+
+
+--8. Retornar encabezados de factura según el día
+CREATE OR REPLACE PROCEDURE ConsultarTiempos (
+    p_minutos IN NUMBER
+)
+AS
+    CURSOR c_ordenes IS 
+        SELECT o.ID AS IdOrden, d.Direccion AS DireccionEntrega, o.Inicio AS FechaInicio, o.ENTREGA AS FechaFin,
+        ROUND((o.ENTREGA - o.Inicio)*24*60) AS TiempoEsperaMinutos, e.Nombre|| ' '|| e.Apellidos AS Repartidor
+        FROM ORDENES o
+        INNER JOIN DIRECCIONES d ON o.Id_Direccion = d.Id
+        INNER JOIN FACTURA f ON o.ID = f.IdOrden
+        INNER JOIN EMPLEADOS e ON f.IdRepartidor = e.Id;
+    v_idOrden NUMBER;
+    v_direccion VARCHAR2(200);
+    v_fechaInicio DATE;
+    v_fechaFin DATE;
+    v_tiempoEspera NUMBER;
+    v_repartidor VARCHAR2(100);
+BEGIN
+    OPEN c_ordenes;
+    LOOP
+        FETCH c_ordenes INTO v_idOrden, v_direccion, v_fechaInicio, v_fechaFin, v_tiempoEspera, v_repartidor;
+        EXIT WHEN c_ordenes%NOTFOUND;
+        IF (v_tiempoEspera >= p_minutos) THEN
+            DBMS_OUTPUT.PUT_LINE('IdOrden: ' || v_idOrden || ', DireccionEntrega: ' || v_direccion ||
+                                 ', FechaInicio: ' || v_fechaInicio || ', FechaFin: ' || v_fechaFin ||
+                                 ', TiempoEsperaMinutos: ' || v_tiempoEspera || ', Repartidor: ' || v_repartidor);
+        END IF;
+    END LOOP;
+    CLOSE c_ordenes;
+END;
+
