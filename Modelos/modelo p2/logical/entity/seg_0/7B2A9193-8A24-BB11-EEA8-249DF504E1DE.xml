@@ -1,0 +1,121 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="7B2A9193-8A24-BB11-EEA8-249DF504E1DE" name="CLIENTES">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:01:47 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="DPI" id="4C526993-47BE-8C12-2D86-E880EF2215F6">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:01:54 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="NOMBRE" id="14D0982D-64BB-C2C3-5935-B36592859D9E">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:02:09 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="APELLIDOS" id="29CA62C6-4730-5070-77C8-16E3A8C8FFC3">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:02:21 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="FECHA_NACIMIENTO" id="0DDE0C7B-4C67-8F0C-D2F2-E9985AE4DC0B">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:02:31 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="CORREO" id="091A481F-741B-ABCB-8DA9-D914EE7974AA">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:03:34 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="TELEFONO" id="67954BC2-3FA7-2F7C-82F1-CC61BE03C9FE">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:03:48 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="NIT" id="4E4670FD-3A67-939F-57ED-EBA6C1A31D5D">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:04:52 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="1F049B4C-7A00-667B-FDD6-F498C8CCB056" name="CLIENTES PK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:02:08 UTC</createdTime>
+<ownerDesignName>modelo p2</ownerDesignName>
+<engineerTo>
+<item key="3E004693-7211-16C6-9AC3-529452998C2D" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>4C526993-47BE-8C12-2D86-E880EF2215F6</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
