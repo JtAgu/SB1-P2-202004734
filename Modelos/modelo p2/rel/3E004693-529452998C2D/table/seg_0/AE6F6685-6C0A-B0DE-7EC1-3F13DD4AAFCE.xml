@@ -1,0 +1,98 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AE6F6685-6C0A-B0DE-7EC1-3F13DD4AAFCE" name="DIRECCIONES">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>16D18E08-2708-E881-647D-9BB630FBF331</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="74D920B8-196D-C887-8661-6307331DFBCC">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>FA0E04BC-3804-2785-B465-3DB5C4BBAF26</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DIRECCION" id="0775DE0F-46ED-3C57-B070-BDED37F95765">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>E15FB931-F361-D069-9DB0-83878A65D045</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MUNICIPIO" id="088CF2E1-8275-30E1-69B2-7D844482DC1B">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>395A7F38-CF74-E2AD-A4B1-AD4285671AED</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ZONA" id="2D90D0DE-1EF7-3CD1-3100-068E93BEC964">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>71A1A4BC-C1FE-68B1-CAC4-D4530702EFB1</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CLIENTES_DPI" id="452A6009-C478-6E4B-F305-C26C81DA62C0">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>5A548E5F-6043-96BF-0F12-1EA7424B5EBE</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6D5F9A0A-9C8B-98F9-C992-4086DBBDE69D" referredColumn="0B4980C5-6AC5-DB84-0054-3FB29D2F2A16"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="94E1DEAA-6B48-225F-7D14-B063AC276B28" name="DIRECCIONES_PK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>B64C28AA-0F54-4C87-2666-A252EE628151</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="74D920B8-196D-C887-8661-6307331DFBCC"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="17117114-50F2-9283-AB7A-5806EF5323A8" name="DIRECCIONES_CLIENTES_FK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>790BB32A-AB4C-1DB1-821A-0D6DCE7E414A</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="452A6009-C478-6E4B-F305-C26C81DA62C0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

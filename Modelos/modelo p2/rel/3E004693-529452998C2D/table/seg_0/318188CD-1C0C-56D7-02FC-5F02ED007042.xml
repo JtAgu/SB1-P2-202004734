@@ -1,0 +1,70 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="318188CD-1C0C-56D7-02FC-5F02ED007042" name="PUESTOS">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>AC7E78CA-1D82-F594-EAF5-E3D7986BB2CB</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="D847BF88-E791-C1DE-6021-F9BB32F2DB99">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>AB2AB442-747D-58B9-4D3B-BF035FAAF4A3</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NOMBRE" id="3536D077-5758-FB78-CB6E-B69D2E234230">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>CBE3A7AD-14CC-F6B5-7011-346397379867</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DESCRIPCION" id="A63478EF-D369-FE65-D3B9-7A5E5DEF4AE8">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>D97B4973-B76E-7F12-DD59-A689E14635B2</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SALARIO" id="13B184A2-026C-A985-2FBF-9B9977362BD0">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>D7443475-F1D0-DCC2-FDAC-7B1721E23CE7</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="541E4A74-B171-AE34-31A5-281F7471EB29" name="PUESTOS_PK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>08E569AC-A59F-68DF-4F30-D2FE6127C7E7</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D847BF88-E791-C1DE-6021-F9BB32F2DB99"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,135 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="0300F37C-72F1-B340-F74F-D5F1C0AB17FA" name="ORDENES">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>E7995DEE-F536-35B7-8114-87D2893B5DB5</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="FF610007-003C-69F6-C5B5-41625F808AE7">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>C55B67C4-56A7-F5BC-5C2C-5FF08A000D69</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CANAL" id="E3570124-0FE2-E50F-83A0-7F859456A2DB">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>7BE6362A-930B-B7B3-0A79-CF53B1917708</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="INICIO" id="78DF680E-DE0D-CDBE-059D-383C6FF2C09A">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>83B03996-254A-2A86-CB50-51380C90ECF8</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ENTREGA" id="104CF238-2916-F5C9-FACA-6443E222A6CD">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>CA33C333-2CC1-3313-551A-847F09E8E083</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ESTADO" id="E16FA5A2-DC0A-C6E1-310D-3553F76CB24C">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>84BB1172-5841-2831-B203-C6A38D7885E3</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RESTAURANTES_ID" id="FE36CC3C-1EA2-05CC-DFF6-670BBF316FB3">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>8E5C5211-C0F7-5639-CFDA-FB3ABA8FBD9D</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="90F0253C-2AEA-FE44-4A73-257FDCE10C07" referredColumn="8A717863-F334-6FFB-1AFE-A8D77E12CB0E"/>
+</associations>
+</Column>
+<Column name="CLIENTES_DPI" id="645DFB36-1226-712B-90EE-9F084C811954">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>DFB16302-0013-A382-30E4-D9D251386E97</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="5C945444-BBA3-BABF-1439-563F41E73B80" referredColumn="0B4980C5-6AC5-DB84-0054-3FB29D2F2A16"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="16BE949F-F679-E16A-5753-617983F7CC73" name="ORDENES_PK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>53EAD2F6-13E2-8954-7398-53A6BA44B6BF</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FF610007-003C-69F6-C5B5-41625F808AE7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="63EF283E-E918-BC43-82CF-740AC8B8AD61" name="ORDENES_RESTAURANTES_FK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>1BAC94BC-7F60-7E06-4F05-13279F3A41D7</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FE36CC3C-1EA2-05CC-DFF6-670BBF316FB3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="51F78578-5966-A6DE-3599-AD7BBFCC3D9C" name="ORDENES_CLIENTES_FK">
+<createdBy>justi</createdBy>
+<createdTime>2023-05-05 01:37:09 UTC</createdTime>
+<generatorID>980CA3AE-7BAE-15AA-36CB-7E6E1913E6D9</generatorID>
+<ownerDesignName>modelo p2</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="645DFB36-1226-712B-90EE-9F084C811954"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
